@@ -1,0 +1,45 @@
+.select {
+    padding: 9px 22px;
+    border: 2px solid #FFFFFF;
+    border-radius: 15px;
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdown {
+    display: none;
+    left: 0;
+    right: 0;
+    top: calc(100% + 10px);
+    background: rgba(19, 20, 72, 1);
+    position: absolute;
+    gap: 5px;
+    padding: 10px 15px;
+}
+
+.open svg{
+    transform: scaleY(-1);
+}
+
+.open .dropdown {
+    display: grid;
+
+}
+
+.dropdown > div {
+    padding: 5px 10px;
+
+}
+
+.dropdown > div:hover {
+    opacity: .7;
+}

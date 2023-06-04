@@ -1,0 +1,208 @@
+.mainInfo {
+    padding: 60px 0px;
+    gap: 90px;
+    display: flex;
+}
+
+.avatarWrapper {
+    width: 400px;
+    height: 400px;
+    padding: 30px;
+    background: radial-gradient(88.92% 88.92% at 11.08% 27.34%, #FF8055 0%, #FC29F3 43.75%, #AA2FDE 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+    background-blend-mode: lighten;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avatarWrapper img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    background: #D9D9D9;
+}
+
+.backCard {
+    position: absolute;
+    background: linear-gradient(90deg, rgba(19, 20, 72, 0.66) 0%, rgba(50, 11, 251, 0.66) 52.79%, rgba(19, 20, 72, 0.66) 100%);
+    background-blend-mode: hard-light;
+    border-radius: 10px 10px 0px 0px;
+    height: 17px;
+    left: 30px;
+    right: 30px;
+    bottom: calc(100% + 1.5px);
+}
+
+.infoCard {
+    background: rgba(19, 20, 72, 0.6);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 40px 40px 40px 70px;
+    max-width: 750px;
+    width: 100%;
+    align-self: flex-end;
+    position: relative;
+}
+.infoCardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.nickname {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 36px;
+    color: #FFFFFF;
+}
+
+.playBtn {
+    background: linear-gradient(178.02deg, #F58169 1.67%, #DC4588 126.9%);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    /*cursor: pointer;*/
+}
+
+.description {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #FFFFFF;
+    margin-bottom: 116px;
+}
+
+.infoCardFooter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.links {
+    display: grid;
+}
+
+.links a {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+
+.stats {
+    display: flex;
+    background: linear-gradient(180deg, rgba(79, 62, 137, 0) -2.54%, rgba(22, 24, 70, 0.39) 89.31%);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 36px;
+    color: #FFFFFF;
+    justify-content: space-between;
+    width: 100vw;
+    --padding: calc((100vw - 1295px) / 2);
+    margin-left: calc(var(--padding) * -1);
+    padding: 30px calc(var(--padding));
+}
+
+.listsWrapper {
+    margin: 8px -60px;
+    gap: 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.listWrapper {
+    flex-grow: 1;
+    padding: 50px 0;
+    background: linear-gradient(359.84deg, rgba(19, 20, 72, 0.35) 0.13%, rgba(19, 20, 72, 0) 99.85%);
+    border-radius: 0px 20px 0px 0px;
+}
+
+.listWrapper [data-type="pagination-list"] {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    min-height: 1000px;
+    align-content: flex-start;
+}
+
+.toggle {
+    width: 350px;
+    height: 35px;
+    margin-left: auto;
+    margin-right: 50px;
+    background-color: red;
+    margin-bottom: 25px;
+}
+
+.trackWrapper {
+    background: linear-gradient(359.84deg, rgba(19, 20, 72, 0.5) 0.13%, rgba(19, 20, 72, 0) 99.85%);
+    border-radius: 0px 0px 20px 0px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 30px 46px 29px 50px;
+}
+
+.rate {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 48px;
+    color: #FF896F;
+    margin-right: 55px;
+}
+
+.trackName {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 36px;
+    color: #FFFFFF;
+}
+
+.trackAuthor {
+    font-style: normal;
+    font-weight: 100;
+    font-size: 20px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+
+.trackInfo {
+    margin-right: auto;
+}
+
+.userWrapper {
+    background: linear-gradient(359.84deg, rgba(19, 20, 72, 0.5) 0.13%, rgba(19, 20, 72, 0) 99.85%);
+    border-radius: 0px 0px 0px 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 25px 50px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    background: #D9D9D9;
+    border-radius: 50%;
+    margin-right: 30px;
+}
+
+.userName {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    margin-right: auto;
+    line-height: 36px;
+    color: #FFFFFF;
+}

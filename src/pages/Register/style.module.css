@@ -1,0 +1,134 @@
+.formWrapper {
+    padding: 70px 115px;
+    max-width: 1420px;
+    background: var(--dark-glass);
+    margin: 102px auto;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+}
+
+.bigArc {
+    width: 350px;
+    height: 350px;
+    background: var(--static-accent);
+    border-radius: 50%;
+    margin-top: 30px;
+    margin-left: 200px;
+}
+
+.form {
+    width: 100%;
+    display: grid;
+    row-gap: 28px;
+    max-width: 465px;
+    background: transparent;
+}
+
+.rect {
+    background: var(--static-accent);
+    width: 143px;
+    height: 42px;
+}
+
+.heading {
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 39px;
+    color: #FFFFFF;
+}
+
+.passworWrapper {
+    display: flex;
+    gap: 25px;
+    justify-content: space-between;
+}
+
+.passworWrapper input {
+    width: 100%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttons > p,
+.buttons > a
+{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: var(--static-accent-text);
+}
+
+.textarea {
+    padding: 32px 31px;
+    height: 133px;
+}
+.mediasWrapper {
+    display: grid;
+    gap: 10px;
+}
+.mediaWrapper {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.mediaWrapper > input {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    width: 100%;
+}
+
+.mediaWrapper svg {
+    cursor: pointer;
+}
+
+.fileLoaderWrapper {
+    display: flex;
+    align-items: center;
+    gap: 39px;
+}
+
+.fileLoaderWrapper img {
+    width: 80px;
+    height: 80px;
+    background: #D9D9D9;
+    border-radius: 50%;
+}
+
+.fileLoaderWrapper input {
+    display: none;
+}
+
+.fileLoaderWrapper label {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    cursor: pointer;
+    text-decoration-line: underline;
+    color: #FFFFFF;
+}
+
+.playBtn {
+    background: linear-gradient(178.02deg, #F58169 1.67%, #DC4588 126.9%);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.lastLoader {
+    padding-bottom: 50px;
+}

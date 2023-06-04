@@ -1,13 +1,94 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+    --static-accent: #F7446F;
+    --static-light-text: #FFFFFF;
+    --static-accent-text: #FF896F;
+    --primary-button: linear-gradient(178.02deg, #F58169 1.67%, #DC4588 126.9%);
+    --dark-glass: rgba(19, 20, 72, 0.6);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+input {
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+}
+
+button {
+    font-family: 'DM Sans', sans-serif;
+}
+
+.container {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 60px;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+    border: 2px solid #FFFFFF;
+    border-radius: 15px;
+    padding: 9px 29px;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    color: #FFFFFF;
+    resize: none
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder,
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+input[type="text"][data-error],
+input[type="password"][data-error] {
+    border: 2px solid rgba(107, 1, 1, 0.78);
+}
+
+input[type="text"][data-error]::placeholder,
+input[type="password"][data-error]::placeholder {
+    color: rgba(255, 0, 0, 0.7);
+}
+
+button {
+    background: var(--primary-button);
+    padding: 14px 26px;
+    cursor: pointer;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    color: #FFFFFF;
+}
+
+form {
+    background-color: var(--dark-glass);
+}
+
+select {
+    padding: 11px 20px 11px;
+    border: 2px solid #FFFFFF;
+    border-radius: 15px;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    color: #FFFFFF;
 }

@@ -1,17 +1,36 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {router} from "./pages";
+import {RouterProvider} from "react-router-dom";
+import {Provider, useDispatch} from "react-redux";
+import {store} from "./store";
+import {getCurrentUserInfo} from "./api/getCurrentUserInfo";
+import {setUserData} from "./store/user.slice";
+
+
+const WithUser = () => {
+    const [isLoadingUserData, setIsLoadingUserData] = useState(true);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!window.localStorage.getItem('token')?.length) return setIsLoadingUserData(false);
+        getCurrentUserInfo()
+            .then((data => {
+                if (data) {
+                    dispatch(setUserData(data));
+                }
+            }))
+            .finally(() => setIsLoadingUserData(false))
+    })
+
+    if (isLoadingUserData) return null;
+    return <RouterProvider router={router} />;
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <Provider store={store}>
+        <WithUser />
+    </Provider>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
