@@ -14,6 +14,12 @@ export const request = (path, options) => {
         }
     }
     return fetch(`${BASE_URL}${path}`, options)
+        .then((response) => {
+            if (!response.ok) {
+                return Promise.reject(response)
+            }
+            return response;
+        })
 }
 
 const fetcher = {

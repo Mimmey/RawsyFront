@@ -5,10 +5,10 @@ export const OnlyUnauthorized = ({ children }) => {
     const user = useSelector(state => state.user);
     const navigate = useNavigate();
 
-    if (user.isAuth) {
-        requestIdleCallback(() => navigate('/profile'));
-        return null;
-    }
+    // if (user.isAuth) {
+    //     requestIdleCallback(() => navigate('/profile'));
+    //     return null;
+    // }
 
     return children;
 }

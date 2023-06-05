@@ -143,7 +143,8 @@ const AboutForm = ({data, changeField, nextStep}) => {
 const ContentForm = ({data}) => {
     const [avatar, setAvatar] = useState('');
     const dispatch = useDispatch();
-    const imageRef = useRef(null);
+    const formRef = useRef();
+    const avatarInputRef = useRef();
 
     const changeAvatar = (e) => {
         const reader = new FileReader();
@@ -170,22 +171,30 @@ const ContentForm = ({data}) => {
 
     const handleRegRequest = async (e) => {
         e.preventDefault();
-        const requestData = {...data};
-        delete requestData.repeatPassword;
-        register(requestData)
-            .then((data) => {
-                window.location.href = '/profile'
-            })
+        console.log(avatarInputRef.current.files)
+
+        const formData = new FormData();
+        formData.append('avatar', avatarInputRef.current.files[0])
+
+        setUserAvatar(formData)
+            .then(console.log)
+        // console.log(formData.get('avatar'))
+        // const requestData = {...data};
+        // delete requestData.repeatPassword;
+        // register(requestData)
+        //     .then((data) => {
+        //         window.location.href = '/profile'
+        //     })
     }
 
 
-    return (<form className={styles.form}>
+    return (<form ref={formRef} className={styles.form}>
         <div className={styles.rect}></div>
         <h2 className={styles.heading}>Дополните информацию</h2>
         <div className={styles.fileLoaderWrapper}>
             {
                 avatar ?
-                    <img ref={imageRef} src={avatar} alt="User avatar"/> :
+                    <img src={avatar} alt="User avatar"/> :
                     <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M80 40C80 62.0914 62.0914 80 40 80C17.9086 80 0 62.0914 0 40C0 17.9086 17.9086 0 40 0C62.0914 0 80 17.9086 80 40Z"
@@ -194,7 +203,7 @@ const ContentForm = ({data}) => {
             }
 
             <label htmlFor="avatar_loader">Загрузить аватар</label>
-            <input onChange={changeAvatar} id="avatar_loader" type="file"/>
+            <input ref={avatarInputRef} onChange={changeAvatar} id="avatar_loader" type="file"/>
         </div>
         <div className={classNames(styles.fileLoaderWrapper, styles.lastLoader)}>
             <div className={styles.playBtn}>
@@ -205,7 +214,7 @@ const ContentForm = ({data}) => {
                 </svg>
             </div>
             <label htmlFor="jingle_loader">Загрузить джингл</label>
-            <input onChange={changeAvatar} id="jingle_loader" type="file"/>
+            <input onChange={changeAvatar} name="avatar" id="jingle_loader" type="file"/>
         </div>
 
         <div className={styles.buttons}>
@@ -226,7 +235,7 @@ export const Register = () => {
         "about": "",
         "mediaLinks": []
     });
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(3);
 
     const changeField = (field, value) => setUserData(data => ({...data, [field]: value}))
 

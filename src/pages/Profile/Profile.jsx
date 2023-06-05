@@ -2,7 +2,10 @@ import {Layout} from "../../components/Layout/Layout";
 import styles from './style.module.css';
 import {Button} from "../../components/ui/Button/Button";
 import {PaginationList} from "../../components/ui/PaginationList/PaginationList";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {getTrackByIdUser} from "../../api/getTrackByIdUser";
+import {fetchPublishedTracks, fetchSubscriptionsUser} from "../../store/user.slice";
 
 
 const Track = () => {
@@ -26,6 +29,13 @@ const User = () => {
 
 export const Profile = () => {
     const user = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        dispatch(fetchPublishedTracks())
+        dispatch(fetchSubscriptionsUser())
+    }, [dispatch])
 
 
     return <Layout>
@@ -38,7 +48,7 @@ export const Profile = () => {
                     <div className={styles.infoCard}>
                         <div className={styles.backCard}/>
                         <div className={styles.infoCardHeader}>
-                            <p className={styles.nickname}>{ user.nickname }</p>
+                            <p className={styles.nickname}>{user.nickname}</p>
                             <div className={styles.playBtn}>
                                 <svg width="36" height="42" viewBox="0 0 36 42" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
@@ -48,7 +58,7 @@ export const Profile = () => {
                                 </svg>
                             </div>
                         </div>
-                        <p className={styles.description}>{ user.about }</p>
+                        <p className={styles.description}>{user.about}</p>
                         <div className={styles.infoCardFooter}>
                             <Button>Редактировать</Button>
                             <div className={styles.links}>
@@ -69,7 +79,11 @@ export const Profile = () => {
                     <div className={styles.toggle}></div>
                     <PaginationList>
                         {
-                            [].map((_, idx) => <Track key={idx} />)
+                            user.publishedTracks.isLoading ?
+                                <p>Track Loading...</p> :
+                                user.publishedTracks.list.length ?
+                                    user.publishedTracks.list.map((_, idx) => <Track key={idx}/>) :
+                                    <p className={styles.notFound}>Track not found</p>
                         }
                     </PaginationList>
                 </div>
@@ -77,7 +91,11 @@ export const Profile = () => {
                     <div className={styles.toggle}></div>
                     <PaginationList>
                         {
-                            [].map((_, idx) => <User key={idx} />)
+                            user.subscriptions.isLoading ?
+                                <p>Track Loading...</p> :
+                                user.subscriptions.list.length ?
+                                    user.subscriptions.list.map((_, idx) =>  <User key={idx}/>) :
+                                    <p className={styles.notFound}>Subscriptions not found</p>
                         }
                     </PaginationList>
                 </div>
