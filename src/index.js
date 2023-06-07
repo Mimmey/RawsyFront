@@ -16,7 +16,7 @@ const WithUser = () => {
         if (!window.localStorage.getItem('token')?.length) return setIsLoadingUserData(false);
         dispatch(fetchUserData())
             .then(() => setIsLoadingUserData(false))
-    })
+    }, [])
 
     if (isLoadingUserData) return null;
     return <RouterProvider router={router} />;

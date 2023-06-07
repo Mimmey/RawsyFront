@@ -3,9 +3,9 @@ import styles from './style.module.css';
 import {Button} from "../../components/ui/Button/Button";
 import {PaginationList} from "../../components/ui/PaginationList/PaginationList";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {getTrackByIdUser} from "../../api/getTrackByIdUser";
+import {useEffect, useState} from "react";
 import {fetchPublishedTracks, fetchSubscriptionsUser} from "../../store/user.slice";
+import {getAvatarById} from "../../api/getAvatar";
 
 
 const Track = () => {
@@ -29,8 +29,16 @@ const User = () => {
 
 export const Profile = () => {
     const user = useSelector(state => state.user);
+    const [avatar, setAvatar] = useState('');
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        getAvatarById(user.id)
+            .then((url) => {
+                console.log(url)
+                setAvatar(url)
+            })
+    }, [user.id])
 
     useEffect(() => {
         dispatch(fetchPublishedTracks())
@@ -43,7 +51,7 @@ export const Profile = () => {
             <div className={styles.infoWrapper}>
                 <div className={styles.mainInfo}>
                     <div className={styles.avatarWrapper}>
-                        <img src="" alt=""/>
+                        <img src={avatar} alt=""/>
                     </div>
                     <div className={styles.infoCard}>
                         <div className={styles.backCard}/>
@@ -94,7 +102,7 @@ export const Profile = () => {
                             user.subscriptions.isLoading ?
                                 <p>Track Loading...</p> :
                                 user.subscriptions.list.length ?
-                                    user.subscriptions.list.map((_, idx) =>  <User key={idx}/>) :
+                                    user.subscriptions.list.map((_, idx) => <User key={idx}/>) :
                                     <p className={styles.notFound}>Subscriptions not found</p>
                         }
                     </PaginationList>

@@ -29,7 +29,7 @@ export const fetchSubscriptionsUser = createAsyncThunk(
     async (_, { getState }) => {
         const state = getState();
         const subscriptions = await getsUserSubscriptions(state.user.id);
-        console.log(subscriptions)
+
         if (subscriptions) {
             return subscriptions;
         }
@@ -63,7 +63,16 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUserData: (state, { payload}) => {
-
+            state.about = payload.about;
+            state.nickname = payload.nickname;
+            state.country = payload.country;
+            state.email = payload.email;
+            state.id = payload.id;
+            state.mediaLinks = payload.mediaLinks;
+            state.role = payload.role;
+            state.tracksInOtherUsersFavouritesCount = payload.tracksInOtherUsersFavouritesCount;
+            state.tracksPurchasedByOtherUsersCount = payload.tracksPurchasedByOtherUsersCount;
+            state.isAuth = true;
         }
     },
     extraReducers: (builder) => {

@@ -15,14 +15,15 @@ export const Login = () => {
     const login = (e) => {
         e.preventDefault();
         const token = btoa(`${nickname}:${password}`);
+        window.localStorage.setItem('token', token);
         getCurrentUserInfo()
             .then((data) => {
-                window.localStorage.setItem('token', token);
+                console.log(data)
                 dispatch(setUserData(data));
                 navigate('/profile')
             })
             .catch(e => {
-                console.log(1, e)
+
             })
     }
 

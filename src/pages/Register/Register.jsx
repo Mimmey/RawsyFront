@@ -145,48 +145,30 @@ const ContentForm = ({data}) => {
     const dispatch = useDispatch();
     const formRef = useRef();
     const avatarInputRef = useRef();
+    const [file, setFile] = useState(null);
 
     const changeAvatar = (e) => {
         const reader = new FileReader();
-        reader.onload = function (e) {
-            setAvatar(e.target.result);
-            // requestIdleCallback(() => {
-            //     const canvas = document.createElement('canvas');
-            //     canvas.width = 80;
-            //     canvas.height = 80;
-            //     const ctx = canvas.getContext('2d');
-            //     ctx.drawImage(imageRef.current, 0, 0);
-            //
-            //     const imageDAta = ctx.getImageData(0,0,80,80);
-            //     setUserAvatar(imageDAta)
-            //         .then(console.log)
-            //     console.log(imageDAta)
-                // console.log(ctx.getImageData(0,0,80,80));
-            // })
-
-            // $('#imgshow').attr('src', e.target.result);
-        }
+        setFile(e.target.files[0])
+        reader.onload = (e) => setAvatar(e.target.result);
         reader.readAsDataURL(e.target.files[0]);
     }
 
     const handleRegRequest = async (e) => {
         e.preventDefault();
-        console.log(avatarInputRef.current.files)
 
-        const formData = new FormData();
-        formData.append('avatar', avatarInputRef.current.files[0])
-
-        setUserAvatar(formData)
-            .then(console.log)
-        // console.log(formData.get('avatar'))
-        // const requestData = {...data};
-        // delete requestData.repeatPassword;
-        // register(requestData)
-        //     .then((data) => {
-        //         window.location.href = '/profile'
-        //     })
+        const requestData = {...data};
+        delete requestData.repeatPassword;
+        register(requestData)
+            .then(() => {
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('avatar', file);
+                    return setUserAvatar(formData);
+                }
+            })
+            .then(() => window.location.href = '/profile')
     }
-
 
     return (<form ref={formRef} className={styles.form}>
         <div className={styles.rect}></div>
@@ -203,7 +185,7 @@ const ContentForm = ({data}) => {
             }
 
             <label htmlFor="avatar_loader">Загрузить аватар</label>
-            <input ref={avatarInputRef} onChange={changeAvatar} id="avatar_loader" type="file"/>
+            <input name="avatar" onChange={changeAvatar} ref={avatarInputRef}  id="avatar_loader" type="file"/>
         </div>
         <div className={classNames(styles.fileLoaderWrapper, styles.lastLoader)}>
             <div className={styles.playBtn}>
@@ -235,7 +217,7 @@ export const Register = () => {
         "about": "",
         "mediaLinks": []
     });
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(1);
 
     const changeField = (field, value) => setUserData(data => ({...data, [field]: value}))
 

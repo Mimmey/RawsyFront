@@ -24,11 +24,11 @@ export const request = (path, options) => {
 
 const fetcher = {
 
-    get: (path, options) => {
+    get: (path, options, callback = res => res.json()) => {
         return request(path, {
             method: 'GET'
         })
-            .then(res => res.json())
+            .then(callback)
     },
     post: (path, data) => {
         return request(path, {
