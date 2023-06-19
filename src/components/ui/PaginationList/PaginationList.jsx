@@ -6,9 +6,9 @@ export const PaginationList = ({ children }) => {
 
     return (<div data-type="pagination-list">
         { children }
-        <div className={styles.paginationWrapper}>
+        <div data-type="pagination-items" className={styles.paginationWrapper}>
             {
-                [1,2,3].map((page) => (<p className={classNames(styles.page, {[styles.active]: page === activePage})} key={page}>
+                [1].map((page) => (<p data-type="pagination-item" className={classNames(styles.page, {[styles.active]: page === activePage})} key={page}>
                     { page }
                 </p>))
             }

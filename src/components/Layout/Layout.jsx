@@ -1,6 +1,7 @@
 import styles from './style.module.css';
 import classNames from "classnames";
 import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
 
 export const Layout = ({children}) => {
     const user = useSelector(state => state.user);
@@ -22,10 +23,12 @@ export const Layout = ({children}) => {
                 {
                     user.isAuth ?
                         <div className={styles.userMenu}>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10.0091 23.5142V0.0767032H13.9864V23.5142H10.0091ZM0.279031 13.7841V9.80682H23.7165V13.7841H0.279031Z" fill="white"/>
-                            </svg>
-                            <img src="" alt=""/>
+                            <Link to="/track/create">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.0091 23.5142V0.0767032H13.9864V23.5142H10.0091ZM0.279031 13.7841V9.80682H23.7165V13.7841H0.279031Z" fill="white"/>
+                                </svg>
+                            </Link>
+                            <img src={user.avatar} alt=""/>
                         </div> :
                         <p className={styles.openClose}>Войти</p>
                 }

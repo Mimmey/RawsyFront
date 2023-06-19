@@ -44,6 +44,20 @@ const fetcher = {
             method: 'PUT',
             ...options
         })
+    },
+    patch: (path, data) => {
+        return request(path, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        })
+    },
+    delete: (path) => {
+        return request(path, {
+            method: 'DELETE'
+        })
     }
 }
 

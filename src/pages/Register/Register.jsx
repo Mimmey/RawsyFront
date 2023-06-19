@@ -121,7 +121,7 @@ const AboutForm = ({data, changeField, nextStep}) => {
                   className={styles.textarea} cols="30" rows="10"></textarea>
         <div className={styles.mediasWrapper}>
             {
-                data.mediaLinks.map((value, idx) => (<div key={idx} className={styles.mediaWrapper}>
+                (data.mediaLinks.length ? data.mediaLinks : ['']).map((value, idx) => (<div key={idx} className={styles.mediaWrapper}>
                     <input value={value} onChange={(e) => changeMedia(e.target.value, idx)}
                            placeholder="Ссылка на страницу в соцсети" type="text"/>
                     <svg onClick={() => changeField('mediaLinks', [...data.mediaLinks, ''])} width="24" height="24"
@@ -163,11 +163,14 @@ const ContentForm = ({data}) => {
             .then(() => {
                 if (file) {
                     const formData = new FormData();
-                    formData.append('avatar', file);
+                    formData.append('file', file);
                     return setUserAvatar(formData);
                 }
             })
-            .then(() => window.location.href = '/profile')
+            .then(() => {
+                window.localStorage.removeItem('token');
+                window.location.href = '/auth/success'
+            })
     }
 
     return (<form ref={formRef} className={styles.form}>

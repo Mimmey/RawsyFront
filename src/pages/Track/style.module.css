@@ -58,6 +58,10 @@
     margin-right: 40px;
 }
 
+.playBtn svg {
+    padding-left: 10px;
+}
+
 .trackInfo {
     display: flex;
     flex-direction: column;

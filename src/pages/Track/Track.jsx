@@ -2,9 +2,13 @@ import styles from './style.module.css'
 import {Layout} from "../../components/Layout/Layout";
 import {Button} from "../../components/ui/Button/Button";
 import {PaginationList} from "../../components/ui/PaginationList/PaginationList";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import fetcher from "../../api/fetcher";
+import {useSelector} from "react-redux";
 
 
-const TrackPlayer = () => {
+const TrackPlayer = ({track}) => {
 
     return (<div className={styles.player}>
         <div className={styles.playBtn}>
@@ -15,40 +19,67 @@ const TrackPlayer = () => {
             </svg>
         </div>
         <div className={styles.trackInfo}>
-            <p className={styles.name}>TrackName</p>
-            <p className={styles.author}>Brutality Will Prevail</p>
+            <p className={styles.name}>{track.name}</p>
+            <p className={styles.author}>Author</p>
         </div>
-        <p className={styles.rate}>4.5</p>
+        <p className={styles.rate}>{track.rating}</p>
     </div>)
 }
 
 export const Track = () => {
+    const {id} = useParams();
+    const navigate = useNavigate();
+    const user = useSelector(state => state.user);
+    const [isLoading, setIsLoading] = useState(true);
+    const [track, setTrack] = useState(null);
+    const [comments, setComments] = useState([]);
+    const isOwner = track?.authorId === user.id;
+
+    useEffect(() => {
+        fetcher.get(`/public/tracks/${id}`)
+            .then(setTrack)
+            .finally(() => setIsLoading(false))
+        fetcher.get(`/public/tracks/${id}/comments`)
+            .then((comments) => {
+                console.log(comments)
+            })
+    }, [])
+
+    const remove = () => {
+        fetcher.delete(`/my/published/tracks/${id}`)
+            .then(() => navigate('/profile'))
+    }
+
+
+    if (isLoading) return <h1>Loading ...</h1>;
+
     return (<Layout>
         <main className="container">
             <div className={styles.trackWrapper}>
                 <div className={styles.trackBack}></div>
                 <div className={styles.track}>
-                    <TrackPlayer/>
+                    <TrackPlayer track={track}/>
                     <div className={styles.trackDecriptions}>
                         <div className={styles.trackDescWrapper}>
-                            {`
-                            Тип: сырой
-                            Жанры: рок, метал
-                            Настроения: яркое, живое, 
-                            динамичное
-                            Наличие вокала: нет
-                            Зацикленность: нет
-                            BPM: 150
-                            Длительность: 2:30
-
-                            `}
+                            {`Тип: ${track.type.name}`}<br/>
+                            {`Жанры: ${track.genres.map(i => i.name).join(', ')}`}<br/>
+                            {`Настроения: ${track.moods.map(i => i.name).join(', ')}`}<br/>
+                            {`Наличие вокала: ${track.hasVocal ? 'Да' : 'Нет'}`}<br/>
+                            {`Зацикленность: ${track.isCycled ? 'Да' : 'Нет'}`}<br/>
+                            {`BPM: ${track.bpm}`}<br/>
+                            {`Длительность: ${Math.floor(track.duration) / 60}:${('00' + track.duration % 60).slice(-2)}`}<br/>
                         </div>
                         <div className={styles.trackDescWrapper}>
-                            Описание: очень хороший трек
+                            {track.about}
                         </div>
                         <div className={styles.trackActions}>
-                            <Button>Редактировать</Button>
-                            <Button type="secondary">Удалить</Button>
+                            {
+                                isOwner &&
+                                <>
+                                    <Link to={`/track/update/${id}`}><Button>Редактировать</Button></Link>
+                                    <Button handleclick={remove} type="secondary">Удалить</Button>
+                                </>
+                            }
                         </div>
                     </div>
                 </div>
@@ -61,29 +92,34 @@ export const Track = () => {
             </div>
             <div className={styles.comments}>
                 <PaginationList>
-                    <div className={styles.commentWrapper}>
-                        <div className={styles.commentHeader}>
-                            <img src="" className={styles.commentAvatar} alt=""/>
-                            <p className={styles.commentName}>The Commentator</p>
-                            <div className={styles.stars}>
-                                {
-                                    [1, 2, 3, 4, 5].map((_, idx) => (<svg
-                                        width="43"
-                                        height="41"
-                                        key={idx}
-                                        viewBox="0 0 43 41"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M21.5 0L26.5516 15.5471H42.8988L29.6736 25.1558L34.7252 40.7029L21.5 31.0942L8.27483 40.7029L13.3264 25.1558L0.101229 15.5471H16.4484L21.5 0Z"
-                                            fill="#FFC737"/>
-                                    </svg>))
-                                }
-                            </div>
-                        </div>
-                        <p className={styles.commentText}>Трек очень хорош</p>
-                    </div>
+                    {
+                        comments.length ?
+                            [] :
+                            <h5 style={{color: '#fff', textAlign: 'center'}}>Комментарии не найдены</h5>
+                    }
+                    {/*<div className={styles.commentWrapper}>*/}
+                    {/*    <div className={styles.commentHeader}>*/}
+                    {/*        <img src="" className={styles.commentAvatar} alt=""/>*/}
+                    {/*        <p className={styles.commentName}>The Commentator</p>*/}
+                    {/*        <div className={styles.stars}>*/}
+                    {/*            {*/}
+                    {/*                [1, 2, 3, 4, 5].map((_, idx) => (<svg*/}
+                    {/*                    width="43"*/}
+                    {/*                    height="41"*/}
+                    {/*                    key={idx}*/}
+                    {/*                    viewBox="0 0 43 41"*/}
+                    {/*                    fill="none"*/}
+                    {/*                    xmlns="http://www.w3.org/2000/svg"*/}
+                    {/*                >*/}
+                    {/*                    <path*/}
+                    {/*                        d="M21.5 0L26.5516 15.5471H42.8988L29.6736 25.1558L34.7252 40.7029L21.5 31.0942L8.27483 40.7029L13.3264 25.1558L0.101229 15.5471H16.4484L21.5 0Z"*/}
+                    {/*                        fill="#FFC737"/>*/}
+                    {/*                </svg>))*/}
+                    {/*            }*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*    <p className={styles.commentText}>Трек очень хорош</p>*/}
+                    {/*</div>*/}
                 </PaginationList>
             </div>
         </main>

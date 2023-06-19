@@ -1,0 +1,35 @@
+.wrapper {
+    max-width: 1070px;
+    width: 100%;
+    margin: 200px auto;
+    background: rgba(19, 20, 72, 0.6);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 440px;
+}
+
+.wrapper h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 52px;
+    color: #FFFFFF;
+    margin-bottom: 50px;
+}
+
+.link {
+    padding: 14px 25px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    background: linear-gradient(178.02deg, #F58169 1.67%, #DC4588 126.9%);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    color: #FFFFFF;
+}

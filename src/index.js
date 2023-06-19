@@ -5,7 +5,7 @@ import {router} from "./pages";
 import {RouterProvider} from "react-router-dom";
 import {Provider, useDispatch} from "react-redux";
 import {store} from "./store";
-import {fetchUserData} from "./store/user.slice";
+import {fetchUserData, getAvatar} from "./store/user.slice";
 
 
 const WithUser = () => {
@@ -15,6 +15,7 @@ const WithUser = () => {
     useEffect(() => {
         if (!window.localStorage.getItem('token')?.length) return setIsLoadingUserData(false);
         dispatch(fetchUserData())
+            .then(() => dispatch(getAvatar()))
             .then(() => setIsLoadingUserData(false))
     }, [])
 

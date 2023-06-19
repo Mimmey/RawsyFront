@@ -24,6 +24,7 @@
     position: absolute;
     gap: 5px;
     padding: 10px 15px;
+    z-index: 2;
 }
 
 .open svg{

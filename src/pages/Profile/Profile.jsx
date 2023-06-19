@@ -4,18 +4,25 @@ import {Button} from "../../components/ui/Button/Button";
 import {PaginationList} from "../../components/ui/PaginationList/PaginationList";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {fetchPublishedTracks, fetchSubscriptionsUser} from "../../store/user.slice";
-import {getAvatarById} from "../../api/getAvatar";
+import {fetchPublishedTracks, fetchSubscribersUser, fetchSubscriptionsUser} from "../../store/user.slice";
+import {Link} from "react-router-dom";
+import classNames from "classnames";
+import fetcher from "../../api/fetcher";
 
 
-const Track = () => {
+const Track = ({track, user}) => {
+    const isOwner = user.id === track.authorId;
+
     return (<div className={styles.trackWrapper}>
-        <p className={styles.rate}>4.5</p>
+        <p className={styles.rate}>{track.rating}</p>
         <div className={styles.trackInfo}>
-            <p className={styles.trackName}>TrackName</p>
-            <p className={styles.trackAuthor}>AuthorNickname</p>
+            <Link to={`/track/${track.id}`}><p className={styles.trackName}>{track.name}</p></Link>
+            <p className={styles.trackAuthor}>{isOwner ? user.nickname : "AuthorNickname"}</p>
         </div>
-        <Button>Загрузить</Button>
+        {isOwner ?
+            <Link to={`/track/update/${track.id}`}><Button>Редактировать</Button></Link> :
+            <Button>Загрузить</Button>
+        }
     </div>)
 }
 
@@ -29,29 +36,27 @@ const User = () => {
 
 export const Profile = () => {
     const user = useSelector(state => state.user);
-    const [avatar, setAvatar] = useState('');
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        getAvatarById(user.id)
-            .then((url) => {
-                console.log(url)
-                setAvatar(url)
-            })
-    }, [user.id])
+    const [showTrackId, setShowTrackId] = useState('publish');
+    const showTracks = user[showTrackId === 'publish' ? 'publishedTracks' : showTrackId === 'favorite' ? 'favoriteTracks' : 'buyTracks'];
+    const [usersMod, setUsersMod] = useState('subscriptions');
+    const showUsers = user[usersMod === 'subscriptions' ? 'subscriptions' : 'subscribers']
 
     useEffect(() => {
         dispatch(fetchPublishedTracks())
         dispatch(fetchSubscriptionsUser())
+        dispatch(fetchSubscribersUser())
+
     }, [dispatch])
 
+    console.log(user)
 
     return <Layout>
         <main className="container">
             <div className={styles.infoWrapper}>
                 <div className={styles.mainInfo}>
                     <div className={styles.avatarWrapper}>
-                        <img src={avatar} alt=""/>
+                        <img src={user.avatar} alt=""/>
                     </div>
                     <div className={styles.infoCard}>
                         <div className={styles.backCard}/>
@@ -68,7 +73,9 @@ export const Profile = () => {
                         </div>
                         <p className={styles.description}>{user.about}</p>
                         <div className={styles.infoCardFooter}>
-                            <Button>Редактировать</Button>
+                            <Link to="/profile/change">
+                                <Button>Редактировать</Button>
+                            </Link>
                             <div className={styles.links}>
                                 {user.mediaLinks.map(({content}, idx) => (
                                     <a key={idx} href={content}>{content}</a>))}
@@ -77,33 +84,50 @@ export const Profile = () => {
                     </div>
                 </div>
                 <div className={styles.stats}>
-                    <p>Треков опубликовано: 0 </p>
+                    <p>Треков опубликовано: {user.publishedTracks.list.length} </p>
                     <p>Продаж: {user.tracksPurchasedByOtherUsersCount} </p>
                     <p>Добавили в избранное: {user.tracksInOtherUsersFavouritesCount}</p>
                 </div>
             </div>
             <div className={styles.listsWrapper}>
                 <div className={styles.listWrapper}>
-                    <div className={styles.toggle}></div>
+                    <div className={styles.toggleWrapper}>
+                        <div onClick={() => setShowTrackId('publish')}
+                             className={classNames({[styles.active]: showTrackId === 'publish'})}>Опубликованные
+                        </div>
+                        <div onClick={() => setShowTrackId('favorite')}
+                             className={classNames({[styles.active]: showTrackId === 'favorite'})}>Избранные
+                        </div>
+                        <div onClick={() => setShowTrackId('buy')}
+                             className={classNames({[styles.active]: showTrackId === 'buy'})}>Приобретенные
+                        </div>
+                    </div>
                     <PaginationList>
                         {
-                            user.publishedTracks.isLoading ?
+                            showTracks.isLoading ?
                                 <p>Track Loading...</p> :
-                                user.publishedTracks.list.length ?
-                                    user.publishedTracks.list.map((_, idx) => <Track key={idx}/>) :
-                                    <p className={styles.notFound}>Track not found</p>
+                                showTracks.list.length ?
+                                    showTracks.list.map((track, idx) => <Track user={user} track={track} key={idx}/>) :
+                                    <p style={{marginTop: '20px'}} className={styles.notFound}>Track not found</p>
                         }
                     </PaginationList>
                 </div>
                 <div className={styles.listWrapper}>
-                    <div className={styles.toggle}></div>
+                    <div className={styles.toggleWrapper}>
+                        <div onClick={() => setUsersMod('subscriptions')}
+                             className={classNames({[styles.active]: usersMod === 'subscriptions'})}>Подписки
+                        </div>
+                        <div onClick={() => setUsersMod('subscribers')}
+                             className={classNames({[styles.active]: usersMod === 'subscribers'})}>Подписчики
+                        </div>
+                    </div>
                     <PaginationList>
                         {
-                            user.subscriptions.isLoading ?
-                                <p>Track Loading...</p> :
+                            showUsers.isLoading ?
+                                <p>Users loading...</p> :
                                 user.subscriptions.list.length ?
                                     user.subscriptions.list.map((_, idx) => <User key={idx}/>) :
-                                    <p className={styles.notFound}>Subscriptions not found</p>
+                                    <p style={{marginTop: '20px'}} className={styles.notFound}>{usersMod} not found</p>
                         }
                     </PaginationList>
                 </div>
