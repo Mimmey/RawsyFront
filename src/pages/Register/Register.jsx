@@ -188,7 +188,7 @@ const ContentForm = ({data}) => {
             }
 
             <label htmlFor="avatar_loader">Загрузить аватар</label>
-            <input name="avatar" onChange={changeAvatar} ref={avatarInputRef}  id="avatar_loader" type="file"/>
+            <input name="avatar" accept=".jpg" onChange={changeAvatar} ref={avatarInputRef}  id="avatar_loader" type="file"/>
         </div>
         <div className={classNames(styles.fileLoaderWrapper, styles.lastLoader)}>
             <div className={styles.playBtn}>
@@ -199,7 +199,7 @@ const ContentForm = ({data}) => {
                 </svg>
             </div>
             <label htmlFor="jingle_loader">Загрузить джингл</label>
-            <input onChange={changeAvatar} name="avatar" id="jingle_loader" type="file"/>
+            <input onChange={changeAvatar} accept=".wav" name="jingle" id="jingle_loader" type="file"/>
         </div>
 
         <div className={styles.buttons}>

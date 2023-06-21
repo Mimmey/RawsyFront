@@ -1,4 +1,4 @@
-import {createBrowserRouter} from "react-router-dom";
+import {createBrowserRouter, Navigate} from "react-router-dom";
 import {Login} from "./Login/Login";
 import {Register} from "./Register/Register";
 import {Profile} from "./Profile/Profile";
@@ -14,16 +14,20 @@ import {News} from "./News/News";
 
 export const router = createBrowserRouter([
     {
+        path: '/',
+        element: <Navigate to="/profile" replace/>
+    },
+    {
         path: "/login",
-        element: <OnlyUnauthorized><Login /></OnlyUnauthorized>,
+        element: <OnlyUnauthorized><Login/></OnlyUnauthorized>,
     },
     {
         path: "/auth",
-        element: <OnlyUnauthorized><Register /></OnlyUnauthorized>,
+        element: <OnlyUnauthorized><Register/></OnlyUnauthorized>,
     },
     {
         path: "/auth/success",
-        element: <SuccessReg />,
+        element: <SuccessReg/>,
     },
     {
         path: "/profile",
@@ -35,18 +39,18 @@ export const router = createBrowserRouter([
     },
     {
         path: "/track/:id",
-        element: <OnlyAuthorized><Track /></OnlyAuthorized>,
+        element: <OnlyAuthorized><Track/></OnlyAuthorized>,
     },
     {
         path: '/track/create',
-        element: <OnlyAuthorized><TrackCreate /></OnlyAuthorized>,
+        element: <OnlyAuthorized><TrackCreate/></OnlyAuthorized>,
     },
     {
         path: '/track/update/:id',
-        element: <OnlyAuthorized><TrackUpdate /></OnlyAuthorized>,
+        element: <OnlyAuthorized><TrackUpdate/></OnlyAuthorized>,
     },
     {
         path: '/news',
-        element: <News />,
+        element: <News/>,
     }
 ]);

@@ -6,23 +6,77 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import fetcher from "../../api/fetcher";
 import {useSelector} from "react-redux";
+import classNames from "classnames";
 
 
-const TrackPlayer = ({track}) => {
+const TrackPlayer = ({track, id}) => {
+    const [audio, setAudio] = useState(null);
+    const [status, setStatus] = useState('pause');
+    const [currentTime, setCurrentTime] = useState(0);
+
+    useEffect(() => {
+        const onPlay = () => {
+            setStatus('play')
+        };
+
+        const onPause = () => {
+            setStatus('pause')
+        }
+
+        const onUpdate = () => {
+            setCurrentTime(audio.currentTime)
+        }
+
+        audio?.addEventListener('play', onPlay);
+        audio?.addEventListener('pause', onPause);
+        audio?.addEventListener('timeupdate', onUpdate);
+        return () => {
+            audio?.removeEventListener('play', onPlay);
+            audio?.removeEventListener('pause', onPause);
+            audio?.removeEventListener('timeupdate', onUpdate);
+        }
+    }, [audio])
+
+    useEffect(() => {
+        fetch(`/public/tracks/${id}/preview`).then(r => r.blob()).then(blob => {
+            const audio = document.createElement('audio');
+            audio.setAttribute('preload', 'auto');
+            audio.src = URL.createObjectURL(new Blob([blob], {type : 'audio/vaw'}));
+            setAudio(audio);
+        })
+    }, [])
+
+
+    const toggleAudioStatus = () => {
+        if (audio.paused) {
+            audio.play()
+        } else {
+            audio.pause()
+        }
+    }
 
     return (<div className={styles.player}>
-        <div className={styles.playBtn}>
-            <svg width="60" height="60" viewBox="0 0 36 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M35 19.268C36.3333 20.0378 36.3333 21.9622 35 22.732L3.5 40.9186C2.16667 41.6884 0.5 40.7261 0.5 39.1865L0.5 2.81347C0.5 1.27387 2.16667 0.311615 3.5 1.08142L35 19.268Z"
-                    fill="white"/>
-            </svg>
+        <div className={classNames(styles.playBtn, {[styles.disabled]: !audio})} onClick={() => toggleAudioStatus()}>
+            { status === 'play' && <svg className={styles.pause} width="50" height="50" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fillRule="evenodd" clipRule="evenodd" d="M3.71429 0C1.66294 0 0 1.66294 0 3.71429V22.2857C0 24.3371 1.66294 26 3.71429 26C5.76563 26 7.42857 24.3371 7.42857 22.2857V3.71429C7.42857 1.66294 5.76563 0 3.71429 0ZM22.2856 0C20.2343 0 18.5714 1.66294 18.5714 3.71429V22.2857C18.5714 24.3371 20.2343 26 22.2856 26C24.337 26 25.9999 24.3371 25.9999 22.2857V3.71429C25.9999 1.66294 24.337 0 22.2856 0Z" fill="white"/>
+                </svg>
+            }
+            {
+                status === 'pause' && <svg className={styles.play} width="60" height="60" viewBox="0 0 36 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M35 19.268C36.3333 20.0378 36.3333 21.9622 35 22.732L3.5 40.9186C2.16667 41.6884 0.5 40.7261 0.5 39.1865L0.5 2.81347C0.5 1.27387 2.16667 0.311615 3.5 1.08142L35 19.268Z"
+                        fill="white"/>
+                </svg>
+            }
         </div>
         <div className={styles.trackInfo}>
             <p className={styles.name}>{track.name}</p>
             <p className={styles.author}>Author</p>
         </div>
         <p className={styles.rate}>{track.rating}</p>
+        <div className={styles.progress}>
+            { audio && <span style={{width: `${currentTime / (audio.duration / 100)}%`}}/>}
+        </div>
     </div>)
 }
 
@@ -50,6 +104,17 @@ export const Track = () => {
             .then(() => navigate('/profile'))
     }
 
+    const download = () => {
+        fetcher.post(`/public/track/${id}/multitrack`)
+            .then(res => res.blob())
+            .then(blob => {
+                const downloadElement = document.createElement('a');
+                downloadElement.download = `${track.name}.zip`
+                downloadElement.href = URL.createObjectURL(blob);
+                downloadElement.click();
+            })
+    }
+
 
     if (isLoading) return <h1>Loading ...</h1>;
 
@@ -58,7 +123,7 @@ export const Track = () => {
             <div className={styles.trackWrapper}>
                 <div className={styles.trackBack}></div>
                 <div className={styles.track}>
-                    <TrackPlayer track={track}/>
+                    <TrackPlayer id={id} track={track}/>
                     <div className={styles.trackDecriptions}>
                         <div className={styles.trackDescWrapper}>
                             {`Тип: ${track.type.name}`}<br/>
@@ -77,6 +142,7 @@ export const Track = () => {
                                 isOwner &&
                                 <>
                                     <Link to={`/track/update/${id}`}><Button>Редактировать</Button></Link>
+                                    <Button handleclick={download}>Скачать</Button>
                                     <Button handleclick={remove} type="secondary">Удалить</Button>
                                 </>
                             }

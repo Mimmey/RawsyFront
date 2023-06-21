@@ -131,14 +131,23 @@ export const TrackCreate = () => {
         createTrack(payload)
             .then(res => res.json())
             .then(({id}) => {
-                // const form = new FormData();
-                // form.append('file', preview)
-                // fetcher.put(`/my/published/tracks/${id}/preview`, {
-                //     body: form
-                // })
+                if (preview) {
+                    const form = new FormData();
+                    form.append('file', preview)
+                    fetcher.put(`/my/published/tracks/${id}/preview`, {
+                        body: form
+                    })
+                }
+                if (multiTrack) {
+                    const form = new FormData();
+                    form.append('file', multiTrack)
+                    fetcher.put(`/my/published/tracks/${id}/multitrack`, {
+                        body: form
+                    })
+                }
             })
-        .then(() => navigate('/profile'))
-        .catch(e => console.log(e))
+            .then(() => navigate('/profile'))
+            .catch(e => console.log(e))
     }
 
     return (<Layout>
@@ -216,7 +225,7 @@ export const TrackCreate = () => {
                         multiTrack?.name || "Выберите мультитрек"
                     }
                 </div>
-                <input onChange={e => setMultiTrack(e.target.files[0])} id="multi" type="file"/>
+                <input accept=".zip" onChange={e => setMultiTrack(e.target.files[0])} id="multi" type="file"/>
                 <label htmlFor="multi" className={styles.button}> Загрузить мультитрек </label>
             </div>
             <div className={styles.formWrapper}>
